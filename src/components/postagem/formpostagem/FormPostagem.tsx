@@ -27,8 +27,8 @@ function FormPostagem() {
       await buscar(`/postagens/${id}`, setPostagem, {
         headers: { Authorization: token },
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       }
     }
@@ -39,8 +39,8 @@ function FormPostagem() {
       await buscar(`/temas/${id}`, setTema, {
         headers: { Authorization: token },
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       }
     }
@@ -51,8 +51,8 @@ function FormPostagem() {
       await buscar("/temas", setTemas, {
         headers: { Authorization: token },
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       }
     }
@@ -73,13 +73,6 @@ function FormPostagem() {
     }
   }, [id]);
 
-  useEffect(() => {
-    setPostagem({
-      ...postagem,
-      tema: tema,
-    });
-  }, [tema]);
-
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
     setPostagem({
       ...postagem,
@@ -99,15 +92,15 @@ function FormPostagem() {
 
     if (id !== undefined) {
       try {
-        await atualizar(`/postagens`, postagem, setPostagem, {
+        await atualizar(`/postagens`, { ...postagem, tema }, setPostagem, {
           headers: {
             Authorization: token,
           },
         });
 
         alert("Postagem atualizada com sucesso");
-      } catch (error: any) {
-        if (error.toString().includes("401")) {
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
           handleLogout();
         } else {
           alert("Erro ao atualizar a Postagem");
@@ -115,15 +108,15 @@ function FormPostagem() {
       }
     } else {
       try {
-        await cadastrar(`/postagens`, postagem, setPostagem, {
+        await cadastrar(`/postagens`, { ...postagem, tema }, setPostagem, {
           headers: {
             Authorization: token,
           },
         });
 
         alert("Postagem cadastrada com sucesso");
-      } catch (error: any) {
-        if (error.toString().includes("401")) {
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
           handleLogout();
         } else {
           alert("Erro ao cadastrar a Postagem");

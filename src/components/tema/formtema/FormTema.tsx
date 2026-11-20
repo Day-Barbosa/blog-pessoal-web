@@ -22,8 +22,8 @@ async function buscarPorId(id: string) {
         await buscar(`/temas/${id}`, setTema, {
             headers: { Authorization: token }
         })
-    } catch (error: any) {
-        if (error.toString().includes('401')) {
+    } catch (error: unknown) {
+        if (String(error).includes('401')) {
             handleLogout()
         }
     }
@@ -63,8 +63,8 @@ async function gerarNovoTema(e: FormEvent<HTMLFormElement>) {
                 headers: { 'Authorization': token }
             })
             alert('O Tema foi atualizado com sucesso!')
-        } catch (error: any) {
-            if (error.toString().includes('401')) {
+        } catch (error: unknown) {
+            if (String(error).includes('401')) {
                 handleLogout();
             } else {
                 alert('Erro ao atualizar o tema.')
@@ -76,8 +76,8 @@ async function gerarNovoTema(e: FormEvent<HTMLFormElement>) {
                 headers: { 'Authorization': token }
             })
             alert('O Tema foi cadastrado com sucesso!')
-        } catch (error: any) {
-            if (error.toString().includes('401')) {
+        } catch (error: unknown) {
+            if (String(error).includes('401')) {
                 handleLogout();
             } else {
                 alert('Erro ao cadastrar o tema.')

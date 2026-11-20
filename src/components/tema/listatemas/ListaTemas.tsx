@@ -10,7 +10,8 @@ function ListaTemas() {
 
     const navigate = useNavigate();
 
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    // começa carregando: evita piscar "nenhum item" antes da primeira busca
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const [temas, setTemas] = useState<Tema[]>([])
 
@@ -24,26 +25,23 @@ useEffect(() => {
     }
 }, [token])
 
-useEffect(() => {
-    buscarTemas()
-}, [temas.length])
-
 async function buscarTemas() {
     try {
-
-        setIsLoading(true)
-
         await buscar('/temas', setTemas, {
             headers: { Authorization: token }
         })
-    } catch (error: any) {
-        if (error.toString().includes('401')) {
+    } catch (error: unknown) {
+        if (String(error).includes('401')) {
             handleLogout()
         }
     }finally {
         setIsLoading(false)
     }
 }
+
+useEffect(() => {
+    buscarTemas()
+}, [temas.length])
 
     return (
         <>

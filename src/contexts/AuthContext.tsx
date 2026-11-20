@@ -15,6 +15,7 @@ interface AuthProviderProps {
     children: ReactNode
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- contexto e provider ficam juntos por simplicidade
 export const AuthContext = createContext({} as AuthContextProps)
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -36,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         try {
             await login(`/usuarios/logar`, usuarioLogin, setUsuario)
             ToastAlerta("Usuário foi autenticado com sucesso!", "sucesso")
-        } catch (error) {
+        } catch {
             ToastAlerta("Os dados do Usuário estão inconsistentes!", "erro")
     }
         setIsLoading(false)

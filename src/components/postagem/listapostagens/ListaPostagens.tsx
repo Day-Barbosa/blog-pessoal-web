@@ -10,7 +10,8 @@ function ListaPostagens() {
 
     const navigate = useNavigate();
 
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    // começa carregando: evita piscar "nenhum item" antes da primeira busca
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const [postagens, setPostagens] = useState<Postagem[]>([])
 
@@ -24,26 +25,23 @@ function ListaPostagens() {
         }
     }, [token])
 
-    useEffect(() => {
-        buscarPostagens()    
-    }, [postagens.length])
-
     async function buscarPostagens() {
         try {
-
-            setIsLoading(true)
-
             await buscar('/postagens', setPostagens, {
                 headers: { Authorization: token }
             })
-        } catch (error: any) {
-            if (error.toString().includes('401')) {
+        } catch (error: unknown) {
+            if (String(error).includes('401')) {
                 handleLogout()
             }
         }finally {
             setIsLoading(false)
         }
     }
+
+    useEffect(() => {
+        buscarPostagens()    
+    }, [postagens.length])
 
     return (
         <>
